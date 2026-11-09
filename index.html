@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-9tN98A9jyQ5214qGwgogIAZ9EVnvvz0fJtaHIZv83YY='; style-src 'sha256-5fFAaiLf3PTF2TNGxYh2M6141e7/yG/Xa/MEngvEFeY='; img-src 'self'; connect-src https://formsubmit.co; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BFREE · Built to Explore</title>
+<meta name="description" content="BFREE — Built to Explore.">
+<meta name="theme-color" content="#0b0b0c">
+<meta property="og:title" content="BFREE · Built to Explore">
+<meta property="og:description" content="Gear built to explore.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{
+  color-scheme:dark;
+  --background:#0b0b0c; --foreground:#ececee; --surface:#161617; --subtle:#1c1c1e;
+  --muted:#9a9aa2; --muted-2:#6b6b73; --titulo:#a1a1aa; --line:#2a2a2d; --input:#3a3a3f;
+  --ink:#f2f2f2; --on-ink:#111; --ink-hover:#d0d0d6; --ink-line:#d6d6da; --ink-muted:#55555c;
+  --ring:rgba(255,255,255,.08); --shadow-soft:rgba(0,0,0,.5); --shadow-hover:rgba(0,0,0,.6);
+  --danger:#f87171;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--background);color:var(--foreground);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,textarea{font:inherit;color:inherit}
+[hidden]{display:none!important}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 40px;display:flex;flex-direction:column;gap:22px}
+.card{background:var(--surface);border-radius:12px;box-shadow:0 0 0 1px var(--ring),0 1px 2px var(--shadow-soft)}
+svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* header */
+.hero{padding:28px 22px}
+.hero .logo{display:block;width:100%;max-width:340px;height:auto;margin:0 auto;color:var(--foreground)}
+
+.titulo{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--titulo);margin:0 4px -10px}
+
+/* links */
+.links{display:flex;flex-direction:column;gap:10px}
+.ic{flex:none;width:38px;height:38px;border-radius:9px;background:var(--subtle);box-shadow:0 0 0 1px var(--ring);display:grid;place-items:center}
+.link{display:flex;align-items:center;gap:14px;padding:16px 18px;width:100%;border:0;text-align:left;cursor:pointer;transition:box-shadow .15s,transform .15s,background .15s}
+.link:hover,.link:focus-visible{box-shadow:0 0 0 1px var(--ring),0 4px 12px var(--shadow-hover);transform:translateY(-1px);outline:none}
+.link .tx{flex:1;min-width:0}
+.link b{display:block;font-size:15px;font-weight:600}
+.link small{display:block;font-size:13px;color:var(--muted);margin-top:1px}
+.link .go{color:var(--muted-2);font-size:18px}
+.link.main{background:var(--ink);color:var(--on-ink);box-shadow:none}
+.link.main:hover{background:var(--ink-hover)}
+.link.main .ic{background:transparent;box-shadow:0 0 0 1px var(--ink-line)}
+.link.main small,.link.main .go{color:var(--ink-muted)}
+
+/* promo */
+.promo{background:var(--ink);color:var(--on-ink);border-radius:12px;padding:20px}
+.promo .top{display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-muted)}
+.promo .live{color:var(--on-ink);display:flex;align-items:center;gap:6px}
+.promo .live.on::before{content:"";width:7px;height:7px;border-radius:50%;background:#ef4444;animation:p 1.4s infinite}
+@keyframes p{50%{opacity:.3}}
+.promo h2{font-size:clamp(30px,9.5vw,44px);font-weight:900;letter-spacing:-.03em;line-height:1;margin-top:14px;overflow-wrap:anywhere}
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+.count div{border-radius:9px;box-shadow:0 0 0 1px var(--ink-line);padding:10px 0;text-align:center}
+.count b{display:block;font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+.count small{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--ink-muted)}
+
+/* custom design form */
+dialog{margin:auto;border:0;border-radius:14px;background:var(--surface);color:var(--foreground);box-shadow:0 0 0 1px var(--ring),0 20px 60px rgba(0,0,0,.7);padding:0;width:min(520px,calc(100vw - 24px));max-height:calc(100dvh - 24px)}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+.dlg{padding:22px 20px 20px}
+.dlg-h{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px}
+.dlg-h h2{font-size:18px;font-weight:700;letter-spacing:-.01em}
+.dlg-h p{font-size:13px;color:var(--muted);margin-top:2px}
+.close{margin-left:auto;flex:none;width:34px;height:34px;border-radius:9px;border:0;background:var(--subtle);color:var(--muted);display:grid;place-items:center;cursor:pointer}
+.close:hover{color:var(--foreground)}
+form{display:flex;flex-direction:column;gap:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:480px){.row{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}
+label.f small{font-weight:400;color:var(--muted-2)}
+.in{width:100%;background:var(--subtle);border:1px solid var(--input);border-radius:8px;padding:10px 12px;font-size:16px;color:var(--foreground)}
+.in:focus{outline:none;border-color:var(--muted)}
+textarea.in{min-height:110px;resize:vertical}
+fieldset{border:0;display:flex;flex-direction:column;gap:8px}
+legend{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.opts{display:flex;gap:8px}
+.opts label{flex:1;cursor:pointer;position:relative}
+.opts input{position:absolute;opacity:0;pointer-events:none}
+.opts span{display:block;text-align:center;padding:10px;border-radius:8px;background:var(--subtle);box-shadow:0 0 0 1px var(--input);font-size:14px;font-weight:600;color:var(--muted)}
+.opts input:checked+span{background:var(--ink);color:var(--on-ink);box-shadow:none}
+.opts input:focus-visible+span{outline:2px solid var(--muted);outline-offset:2px}
+.hint{font-size:12px;color:var(--muted)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.submit{border:0;border-radius:8px;padding:13px;background:var(--ink);color:var(--on-ink);font-size:14px;font-weight:700;cursor:pointer}
+.submit:hover{background:var(--ink-hover)}
+.submit:disabled{opacity:.5;cursor:wait}
+.legal{font-size:11px;color:var(--muted-2);text-align:center}
+.legal a,.msg a{text-decoration:underline}
+.msg{font-size:13px;text-align:center}
+.msg.err{color:var(--danger)}
+.done{text-align:center;padding:18px 4px 6px}
+.done .ok{width:52px;height:52px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;background:var(--ink);color:var(--on-ink)}
+.done h3{font-size:18px}
+.done p{font-size:14px;color:var(--muted);margin:6px 0 18px}
+
+footer{text-align:center;font-size:12px;color:var(--muted-2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="card hero">
+    <svg class="logo" role="img" aria-label="BFREE · Built to explore" xmlns="http://www.w3.org/2000/svg" viewBox="545 322 604 141" fill="currentColor"><path transform="translate(1069.35 372.337)" d="M0,83.76L-33.25,27.49L0,-1.96L33.25,27.49L0,83.76ZM0,-6.05L-37.18,26.88L-37.17,26.88L-37.18,26.89L0,89.81L37.18,26.89L37.18,26.88L0,-6.05Z"/><path transform="translate(1106.83 333.889)" d="M0,58.44L-37.48,25.24L-74.96,58.44L-110.52,-1.74L35.56,-1.74L0,58.44ZM-115.88,-4.76L-75.72,63.2L-37.48,29.33L0.76,63.2L40.92,-4.76L-115.88,-4.76Z"/><path transform="translate(563.514 336.082)" d="M0,40.6L12.92,40.6C15.56,40.6 17.56,39.83 18.92,38.29C20.27,36.76 20.95,35 20.95,33.03C20.95,30.88 20.25,29.07 18.87,27.59C17.48,26.11 15.5,25.38 12.92,25.38L0,25.38L0,40.6ZM0,13.66L12.09,13.66C14.61,13.66 16.5,13.01 17.76,11.72C19.02,10.43 19.65,8.77 19.65,6.74C19.65,4.77 19.02,3.15 17.76,1.89C16.5,0.63 14.61,0 12.09,0L0,0L0,13.66ZM-14.21,52.6C-14.89,52.6 -15.44,52.38 -15.87,51.95C-16.3,51.52 -16.52,50.97 -16.52,50.29L-16.52,-9.69C-16.52,-10.37 -16.3,-10.92 -15.87,-11.35C-15.44,-11.78 -14.89,-11.99 -14.21,-11.99L13.93,-11.99C19.22,-11.99 23.56,-11.26 26.94,-9.78C30.33,-8.3 32.83,-6.2 34.46,-3.46C36.09,-0.72 36.91,2.52 36.91,6.28C36.91,8.49 36.49,10.44 35.66,12.13C34.83,13.83 33.82,15.23 32.62,16.33C31.42,17.44 30.3,18.24 29.25,18.73C31.59,19.84 33.66,21.66 35.48,24.18C37.29,26.7 38.2,29.65 38.2,33.03C38.2,37.09 37.29,40.59 35.48,43.51C33.66,46.43 31.02,48.67 27.54,50.24C24.07,51.81 19.81,52.6 14.76,52.6L-14.21,52.6Z"/><path transform="translate(638.993 324.087)" d="M0,65.51C-5.54,65.51 -10.38,64.61 -14.53,62.79C-18.68,60.98 -21.9,58.18 -24.18,54.4C-26.45,50.61 -27.59,45.8 -27.59,39.95L-27.59,2.31C-27.59,1.63 -27.38,1.08 -26.94,0.65C-26.51,0.22 -25.96,0 -25.28,0L-13.38,0C-12.7,0 -12.15,0.22 -11.72,0.65C-11.29,1.08 -11.07,1.63 -11.07,2.31L-11.07,39.86C-11.07,43.86 -10.1,46.86 -8.17,48.86C-6.23,50.86 -3.51,51.86 0,51.86C3.44,51.86 6.14,50.86 8.07,48.86C10.01,46.86 10.98,43.86 10.98,39.86L10.98,2.31C10.98,1.63 11.21,1.08 11.67,0.65C12.13,0.22 12.67,0 13.29,0L25.28,0C25.9,0 26.44,0.22 26.9,0.65C27.36,1.08 27.59,1.63 27.59,2.31L27.59,39.95C27.59,45.8 26.45,50.61 24.18,54.4C21.9,58.18 18.7,60.98 14.58,62.79C10.46,64.61 5.6,65.51 0,65.51"/><path transform="translate(681.161 324.087)" d="M0,64.59C-0.68,64.59 -1.23,64.38 -1.66,63.95C-2.09,63.52 -2.31,62.96 -2.31,62.28L-2.31,2.31C-2.31,1.63 -2.09,1.08 -1.66,0.65C-1.23,0.22 -0.68,0 0,0L12.36,0C13.04,0 13.6,0.22 14.03,0.65C14.46,1.08 14.67,1.63 14.67,2.31L14.67,62.28C14.67,62.96 14.46,63.52 14.03,63.95C13.6,64.38 13.04,64.59 12.36,64.59L0,64.59Z"/><path transform="translate(711.056 324.087)" d="M0,64.59C-0.68,64.59 -1.23,64.38 -1.66,63.95C-2.09,63.52 -2.31,62.96 -2.31,62.28L-2.31,2.31C-2.31,1.63 -2.09,1.08 -1.66,0.65C-1.23,0.22 -0.68,0 0,0L12.18,0C12.79,0 13.33,0.22 13.79,0.65C14.26,1.08 14.49,1.63 14.49,2.31L14.49,50.66L42.35,50.66C43.03,50.66 43.6,50.89 44.06,51.35C44.52,51.81 44.75,52.38 44.75,53.06L44.75,62.28C44.75,62.96 44.52,63.52 44.06,63.95C43.6,64.38 43.03,64.59 42.35,64.59L0,64.59Z"/><path transform="translate(770.571 324.087)" d="M0,64.59C-0.68,64.59 -1.23,64.38 -1.66,63.95C-2.09,63.52 -2.31,62.96 -2.31,62.28L-2.31,14.49L-18.73,14.49C-19.41,14.49 -19.96,14.26 -20.39,13.79C-20.82,13.33 -21.04,12.79 -21.04,12.18L-21.04,2.31C-21.04,1.63 -20.82,1.08 -20.39,0.65C-19.96,0.22 -19.41,0 -18.73,0L30.91,0C31.59,0 32.14,0.22 32.57,0.65C33,1.08 33.22,1.63 33.22,2.31L33.22,12.18C33.22,12.79 33,13.33 32.57,13.79C32.14,14.26 31.59,14.49 30.91,14.49L14.49,14.49L14.49,62.28C14.49,62.96 14.27,63.52 13.84,63.95C13.41,64.38 12.86,64.59 12.18,64.59L0,64.59Z"/><path transform="translate(863.95 324.087)" d="M0,64.59C-0.68,64.59 -1.23,64.38 -1.66,63.95C-2.09,63.52 -2.31,62.96 -2.31,62.28L-2.31,14.49L-18.73,14.49C-19.41,14.49 -19.96,14.26 -20.39,13.79C-20.82,13.33 -21.04,12.79 -21.04,12.18L-21.04,2.31C-21.04,1.63 -20.82,1.08 -20.39,0.65C-19.96,0.22 -19.41,0 -18.73,0L30.91,0C31.59,0 32.14,0.22 32.57,0.65C33,1.08 33.22,1.63 33.22,2.31L33.22,12.18C33.22,12.79 33,13.33 32.57,13.79C32.14,14.26 31.59,14.49 30.91,14.49L14.49,14.49L14.49,62.28C14.49,62.96 14.27,63.52 13.84,63.95C13.41,64.38 12.86,64.59 12.18,64.59L0,64.59Z"/><path transform="translate(931.031 336.452)" d="M0,39.86C3.26,39.86 5.92,38.88 7.98,36.91C10.04,34.94 11.13,31.8 11.26,27.5C11.38,24.79 11.44,22.24 11.44,19.84C11.44,17.44 11.38,14.95 11.26,12.36C11.13,9.47 10.6,7.12 9.64,5.3C8.69,3.49 7.38,2.15 5.72,1.29C4.06,0.43 2.15,0 0,0C-2.09,0 -3.97,0.43 -5.63,1.29C-7.29,2.15 -8.61,3.49 -9.6,5.3C-10.58,7.12 -11.13,9.47 -11.26,12.36C-11.32,14.95 -11.35,17.44 -11.35,19.84C-11.35,22.24 -11.32,24.79 -11.26,27.5C-11.07,31.8 -9.96,34.94 -7.94,36.91C-5.91,38.88 -3.26,39.86 0,39.86M0,53.15C-5.66,53.15 -10.58,52.23 -14.76,50.38C-18.95,48.53 -22.21,45.75 -24.54,42.03C-26.88,38.31 -28.18,33.65 -28.42,28.05C-28.48,25.41 -28.51,22.76 -28.51,20.11C-28.51,17.47 -28.48,14.8 -28.42,12.09C-28.18,6.55 -26.87,1.89 -24.5,-1.89C-22.13,-5.67 -18.86,-8.52 -14.67,-10.43C-10.49,-12.33 -5.6,-13.29 0,-13.29C5.54,-13.29 10.41,-12.33 14.63,-10.43C18.84,-8.52 22.15,-5.67 24.55,-1.89C26.94,1.89 28.24,6.55 28.42,12.09C28.54,14.8 28.6,17.47 28.6,20.11C28.6,22.76 28.54,25.41 28.42,28.05C28.17,33.65 26.88,38.31 24.55,42.03C22.21,45.75 18.95,48.53 14.76,50.38C10.58,52.23 5.66,53.15 0,53.15"/><path transform="translate(549.304 396.633)" d="M0,64.59C-0.68,64.59 -1.23,64.38 -1.66,63.95C-2.09,63.52 -2.31,62.96 -2.31,62.28L-2.31,2.31C-2.31,1.63 -2.09,1.08 -1.66,0.65C-1.23,0.22 -0.68,0 0,0L43.09,0C43.77,0 44.32,0.22 44.75,0.65C45.18,1.08 45.4,1.63 45.4,2.31L45.4,10.98C45.4,11.66 45.18,12.21 44.75,12.64C44.32,13.07 43.77,13.29 43.09,13.29L13.66,13.29L13.66,25.74L41.06,25.74C41.74,25.74 42.29,25.98 42.72,26.44C43.15,26.9 43.37,27.47 43.37,28.14L43.37,36.17C43.37,36.79 43.15,37.32 42.72,37.78C42.29,38.25 41.74,38.48 41.06,38.48L13.66,38.48L13.66,51.3L43.83,51.3C44.51,51.3 45.06,51.52 45.49,51.95C45.92,52.38 46.14,52.94 46.14,53.61L46.14,62.28C46.14,62.96 45.92,63.52 45.49,63.95C45.06,64.38 44.51,64.59 43.83,64.59L0,64.59Z"/><path transform="translate(602.545 396.633)" d="M0,64.59C-0.55,64.59 -1.03,64.39 -1.43,63.99C-1.83,63.59 -2.03,63.15 -2.03,62.65C-2.03,62.47 -2,62.28 -1.94,62.1C-1.88,61.91 -1.78,61.73 -1.66,61.55L18.45,31.65L-0.18,3.04C-0.37,2.68 -0.46,2.31 -0.46,1.94C-0.46,1.45 -0.28,1 0.09,0.6C0.46,0.2 0.92,0 1.48,0L14.86,0C15.78,0 16.48,0.23 16.98,0.69C17.47,1.15 17.81,1.57 17.99,1.94L29.07,18.73L40.23,1.94C40.48,1.57 40.85,1.15 41.34,0.69C41.83,0.23 42.54,0 43.46,0L56.1,0C56.66,0 57.13,0.2 57.53,0.6C57.93,1 58.13,1.45 58.13,1.94C58.13,2.37 58.01,2.74 57.76,3.04L39.03,31.56L59.33,61.55C59.45,61.73 59.53,61.91 59.56,62.1C59.59,62.28 59.61,62.47 59.61,62.65C59.61,63.15 59.42,63.59 59.05,63.99C58.69,64.39 58.23,64.59 57.67,64.59L43.92,64.59C43,64.59 42.27,64.36 41.75,63.9C41.23,63.44 40.88,63.05 40.69,62.74L28.42,45.03L16.43,62.74C16.24,63.05 15.9,63.44 15.41,63.9C14.92,64.36 14.21,64.59 13.29,64.59L0,64.59Z"/><path transform="translate(686.512 431.881)" d="M0,-5.91L10.8,-5.91C13.44,-5.91 15.55,-6.58 17.12,-7.93C18.68,-9.29 19.47,-11.35 19.47,-14.12C19.47,-16.45 18.79,-18.42 17.44,-20.02C16.09,-21.62 13.87,-22.42 10.8,-22.42L0,-22.42L0,-5.91ZM-14.58,29.34C-15.26,29.34 -15.81,29.13 -16.24,28.7C-16.67,28.27 -16.89,27.71 -16.89,27.04L-16.89,-32.94C-16.89,-33.62 -16.67,-34.17 -16.24,-34.6C-15.81,-35.03 -15.26,-35.25 -14.58,-35.25L11.26,-35.25C16.36,-35.25 20.81,-34.46 24.59,-32.9C28.37,-31.33 31.33,-28.97 33.45,-25.84C35.57,-22.7 36.63,-18.73 36.63,-13.93C36.63,-9.2 35.57,-5.29 33.45,-2.21C31.33,0.86 28.37,3.14 24.59,4.61C20.81,6.09 16.36,6.83 11.26,6.83L0.28,6.83L0.28,27.04C0.28,27.71 0.05,28.27 -0.42,28.7C-0.88,29.13 -1.45,29.34 -2.12,29.34L-14.58,29.34Z"/><path transform="translate(734.309 396.633)" d="M0,64.59C-0.68,64.59 -1.23,64.38 -1.66,63.95C-2.09,63.52 -2.31,62.96 -2.31,62.28L-2.31,2.31C-2.31,1.63 -2.09,1.08 -1.66,0.65C-1.23,0.22 -0.68,0 0,0L12.18,0C12.79,0 13.33,0.22 13.79,0.65C14.26,1.08 14.49,1.63 14.49,2.31L14.49,50.66L42.35,50.66C43.03,50.66 43.6,50.89 44.06,51.35C44.52,51.81 44.75,52.38 44.75,53.06L44.75,62.28C44.75,62.96 44.52,63.52 44.06,63.95C43.6,64.38 43.03,64.59 42.35,64.59L0,64.59Z"/><path transform="translate(812.74 408.998)" d="M0,39.86C3.26,39.86 5.92,38.88 7.98,36.91C10.04,34.94 11.13,31.8 11.26,27.5C11.38,24.79 11.44,22.24 11.44,19.84C11.44,17.44 11.38,14.95 11.26,12.36C11.13,9.47 10.6,7.12 9.64,5.3C8.69,3.49 7.38,2.15 5.72,1.29C4.06,0.43 2.15,0 0,0C-2.09,0 -3.97,0.43 -5.63,1.29C-7.29,2.15 -8.61,3.49 -9.6,5.3C-10.58,7.12 -11.13,9.47 -11.26,12.36C-11.32,14.95 -11.35,17.44 -11.35,19.84C-11.35,22.24 -11.32,24.79 -11.26,27.5C-11.07,31.8 -9.97,34.94 -7.94,36.91C-5.91,38.88 -3.26,39.86 0,39.86M0,53.15C-5.66,53.15 -10.58,52.23 -14.76,50.38C-18.95,48.53 -22.21,45.75 -24.55,42.03C-26.88,38.31 -28.18,33.65 -28.42,28.05C-28.48,25.41 -28.51,22.76 -28.51,20.11C-28.51,17.47 -28.48,14.8 -28.42,12.09C-28.18,6.55 -26.87,1.89 -24.5,-1.89C-22.13,-5.67 -18.86,-8.52 -14.67,-10.43C-10.49,-12.33 -5.6,-13.29 0,-13.29C5.54,-13.29 10.41,-12.33 14.62,-10.43C18.84,-8.52 22.15,-5.67 24.55,-1.89C26.94,1.89 28.23,6.55 28.42,12.09C28.54,14.8 28.6,17.47 28.6,20.11C28.6,22.76 28.54,25.41 28.42,28.05C28.17,33.65 26.88,38.31 24.55,42.03C22.21,45.75 18.95,48.53 14.76,50.38C10.58,52.23 5.66,53.15 0,53.15"/><path transform="translate(868.564 432.435)" d="M0,-7.01L10.7,-7.01C13.59,-7.01 15.76,-7.72 17.21,-9.13C18.65,-10.55 19.38,-12.49 19.38,-14.95C19.38,-17.35 18.68,-19.29 17.3,-20.76C15.92,-22.24 13.72,-22.98 10.7,-22.98L0,-22.98L0,-7.01ZM-14.21,28.79C-14.89,28.79 -15.44,28.57 -15.87,28.14C-16.3,27.71 -16.52,27.16 -16.52,26.48L-16.52,-33.49C-16.52,-34.17 -16.3,-34.73 -15.87,-35.16C-15.44,-35.59 -14.89,-35.8 -14.21,-35.8L10.89,-35.8C18.82,-35.8 25.08,-33.97 29.66,-30.31C34.25,-26.65 36.54,-21.47 36.54,-14.76C36.54,-10.4 35.48,-6.7 33.36,-3.69C31.23,-0.68 28.45,1.6 25.01,3.14L37.74,25.84C37.92,26.2 38.02,26.54 38.02,26.85C38.02,27.34 37.81,27.79 37.42,28.19C37.02,28.59 36.54,28.79 35.99,28.79L23.81,28.79C22.64,28.79 21.78,28.5 21.22,27.91C20.67,27.33 20.27,26.79 20.02,26.3L9.5,6L0,6L0,26.48C0,27.16 -0.22,27.71 -0.65,28.14C-1.08,28.57 -1.63,28.79 -2.31,28.79L-14.21,28.79Z"/><path transform="translate(918.114 396.633)" d="M0,64.59C-0.68,64.59 -1.23,64.38 -1.66,63.95C-2.09,63.52 -2.31,62.96 -2.31,62.28L-2.31,2.31C-2.31,1.63 -2.09,1.08 -1.66,0.65C-1.23,0.22 -0.68,0 0,0L43.09,0C43.77,0 44.32,0.22 44.75,0.65C45.18,1.08 45.4,1.63 45.4,2.31L45.4,10.98C45.4,11.66 45.18,12.21 44.75,12.64C44.32,13.07 43.77,13.29 43.09,13.29L13.66,13.29L13.66,25.74L41.06,25.74C41.74,25.74 42.29,25.98 42.72,26.44C43.15,26.9 43.37,27.47 43.37,28.14L43.37,36.17C43.37,36.79 43.15,37.32 42.72,37.78C42.29,38.25 41.74,38.48 41.06,38.48L13.66,38.48L13.66,51.3L43.83,51.3C44.51,51.3 45.06,51.52 45.49,51.95C45.92,52.38 46.14,52.94 46.14,53.61L46.14,62.28C46.14,62.96 45.92,63.52 45.49,63.95C45.06,64.38 44.51,64.59 43.83,64.59L0,64.59Z"/></svg>
+  </header>
+
+  <!-- PROMO — dates in Spain time; hides itself after the end -->
+  <section class="promo" id="promo" hidden
+           data-start="2026-11-23T00:00:00+01:00"
+           data-end="2026-11-30T23:59:00+01:00">
+    <div class="top"><span>Nov 23 → Nov 30</span><span class="live" id="pState"></span></div>
+    <h2>BLACKFREEDAY</h2>
+    <div class="count" aria-live="polite">
+      <div><b id="cd-d">00</b><small>DAYS</small></div>
+      <div><b id="cd-h">00</b><small>HOURS</small></div>
+      <div><b id="cd-m">00</b><small>MIN</small></div>
+      <div><b id="cd-s">00</b><small>SEC</small></div>
+    </div>
+  </section>
+
+  <h2 class="titulo">Links</h2>
+  <nav class="links">
+    <a class="card link main" href="https://wearebfree.com/?utm_source=instagram&amp;utm_medium=linkinbio&amp;utm_campaign=bio&amp;utm_content=web-link">
+      <span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+      <span class="tx"><b>wearebfree.com</b><small>Official store &amp; full catalog</small></span>
+      <span class="go">→</span>
+    </a>
+    <button type="button" class="card link" id="openForm" aria-haspopup="dialog">
+      <span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
+      <span class="tx"><b>Custom design</b><small>Tell us your idea, we build it for you</small></span>
+      <span class="go">→</span>
+    </button>
+  </nav>
+
+  <footer>BFREE © <span id="year">2026</span> · Built to explore</footer>
+</main>
+
+<!-- CUSTOM DESIGN REQUEST (FormSubmit) -->
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <div class="dlg">
+    <div class="dlg-h">
+      <div><h2 id="dlgTitle">Custom design</h2><p>Tell us about your project and we’ll get back to you.</p></div>
+      <button type="button" class="close" id="closeForm" aria-label="Close"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+
+    <form id="form" novalidate>
+      <div class="row">
+        <label class="f">Name<input class="in" name="name" autocomplete="name" required maxlength="100"></label>
+        <label class="f">Phone <small>optional</small><input class="in" name="phone" type="tel" autocomplete="tel" maxlength="30"></label>
+      </div>
+      <label class="f">Email<input class="in" name="email" type="email" autocomplete="email" required maxlength="150"></label>
+      <label class="f">Your project <small>what you need, sizes, use, quantity…</small><textarea class="in" name="message" required maxlength="3000"></textarea></label>
+      <fieldset>
+        <legend>Do you have photos or sketches?</legend>
+        <div class="opts">
+          <label><input type="radio" name="photos" value="Yes" required><span>Yes</span></label>
+          <label><input type="radio" name="photos" value="No"><span>No</span></label>
+        </div>
+        <p class="hint" id="photoHint" hidden>Great — we’ll reply by email so you can send them over.</p>
+      </fieldset>
+      <input class="hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="submit" type="submit" id="send">Send request</button>
+      <p class="msg" id="msg" role="alert" hidden></p>
+      <p class="legal">We’ll only use your details to reply to you. <a href="https://wearebfree.com/policies/privacy-policy">Privacy policy</a></p>
+    </form>
+
+    <div class="done" id="done" hidden>
+      <div class="ok"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></div>
+      <h3>Request sent</h3>
+      <p>Thanks! We’ll get back to you very soon.</p>
+      <button type="button" class="submit" id="doneClose">Close</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  /* Sent by FormSubmit to this address. After activation it can be swapped
+     for the random alias FormSubmit emails you, to keep the address out of the code. */
+  var TO="hello@wearebfree.com";
+
+  var $=function(i){return document.getElementById(i)},p=function(n){return String(n).padStart(2,"0")};
+  $("year").textContent=new Date().getFullYear();
+
+  /* promo countdown */
+  var box=$("promo"),start=new Date(box.dataset.start),end=new Date(box.dataset.end),st=$("pState"),timer;
+  function tick(){
+    var now=new Date(),target;
+    if(now<start){target=start;st.textContent="Starts in";st.className="live"}
+    else if(now<end){target=end;st.textContent="Live · ends in";st.className="live on"}
+    else{box.hidden=true;clearInterval(timer);return}
+    box.hidden=false;
+    var t=Math.max(0,target-now)/1000;
+    $("cd-d").textContent=p(Math.floor(t/86400));
+    $("cd-h").textContent=p(Math.floor(t/3600)%24);
+    $("cd-m").textContent=p(Math.floor(t/60)%60);
+    $("cd-s").textContent=p(Math.floor(t)%60);
+  }
+  tick();timer=setInterval(tick,1000);
+
+  /* custom design form */
+  var dlg=$("dlg"),form=$("form"),msg=$("msg"),send=$("send");
+  $("openForm").addEventListener("click",function(){form.hidden=false;$("done").hidden=true;msg.hidden=true;dlg.showModal()});
+  $("closeForm").addEventListener("click",function(){dlg.close()});
+  $("doneClose").addEventListener("click",function(){dlg.close()});
+  dlg.addEventListener("click",function(e){if(e.target===dlg)dlg.close()});
+  form.addEventListener("change",function(e){if(e.target.name==="photos")$("photoHint").hidden=e.target.value!=="Yes"});
+
+  function mailtoFallback(d){
+    var body="Name: "+d.name+"\nEmail: "+d.email+"\nPhone: "+(d.phone||"-")+"\nPhotos/sketches: "+(d.photos||"-")+"\n\n"+d.message;
+    if(body.length>1500)body=body.slice(0,1500)+"…";
+    return "mailto:"+TO+"?subject="+encodeURIComponent("Custom design request")+"&body="+encodeURIComponent(body);
+  }
+  function showError(text,d){
+    msg.className="msg err";msg.hidden=false;msg.textContent=text;
+    if(d){var a=document.createElement("a");a.href=mailtoFallback(d);a.textContent="Send it by email instead";msg.append(" ",a)}
+  }
+
+  form.addEventListener("submit",function(e){
+    e.preventDefault();
+    msg.hidden=true;
+    if(!form.checkValidity()){
+      var bad=form.querySelector(":invalid");
+      showError(bad&&bad.name==="email"&&bad.value?"Please enter a valid email.":"Please fill in the required fields.");
+      if(bad)bad.focus();
+      return;
+    }
+    var fd=new FormData(form),d={};fd.forEach(function(v,k){d[k]=String(v).trim()});
+    if(d.botcheck)return;
+    send.disabled=true;send.textContent="Sending…";
+    fetch("https://formsubmit.co/ajax/"+TO,{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      body:JSON.stringify({
+        _subject:"Custom design request — "+d.name,
+        _template:"table",
+        _captcha:"false",
+        _replyto:d.email,
+        Name:d.name,Email:d.email,Phone:d.phone||"-",
+        "Photos or sketches":d.photos,
+        Project:d.message
+      })
+    }).then(function(r){return r.json()}).then(function(j){
+      if(String(j.success)!=="true")throw new Error(j.message||"error");
+      form.reset();$("photoHint").hidden=true;form.hidden=true;$("done").hidden=false;
+    }).catch(function(){
+      showError("Something went wrong.",d);
+    }).finally(function(){send.disabled=false;send.textContent="Send request"});
+  });
+})();
+</script>
+</body>
+</html>
