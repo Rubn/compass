@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-9tN98A9jyQ5214qGwgogIAZ9EVnvvz0fJtaHIZv83YY='; style-src 'sha256-5fFAaiLf3PTF2TNGxYh2M6141e7/yG/Xa/MEngvEFeY='; img-src 'self'; connect-src https://formsubmit.co; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-KIP/NTBv0wZgONGvNfMsdGBLurA6PP1xEOdSv1b+/wQ='; style-src 'sha256-3xA385GFbzFR6VrgqTTdI4Mwvw1X35O8A5ab/RiatUQ='; img-src 'self'; connect-src https://formsubmit.co; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>BFREE · Built to Explore</title>
@@ -24,7 +24,7 @@
 html{-webkit-text-size-adjust:100%}
 body{background:var(--background);color:var(--foreground);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.45;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
-button,input,textarea{font:inherit;color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
 [hidden]{display:none!important}
 .wrap{max-width:560px;margin:0 auto;padding:16px 16px 40px;display:flex;flex-direction:column;gap:22px}
 .card{background:var(--surface);border-radius:12px;box-shadow:0 0 0 1px var(--ring),0 1px 2px var(--shadow-soft)}
@@ -74,8 +74,11 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 form{display:flex;flex-direction:column;gap:14px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media (max-width:480px){.row{grid-template-columns:1fr}}
-label.f{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}
-label.f small{font-weight:400;color:var(--muted-2)}
+.f{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}
+.f small{font-weight:400;color:var(--muted-2)}
+.tel{display:grid;grid-template-columns:auto 1fr;gap:8px}
+.tel select{width:auto;padding-right:8px;cursor:pointer}
+.dlg:focus{outline:none}
 .in{width:100%;background:var(--subtle);border:1px solid var(--input);border-radius:8px;padding:10px 12px;font-size:16px;color:var(--foreground)}
 .in:focus{outline:none;border-color:var(--muted)}
 textarea.in{min-height:110px;resize:vertical}
@@ -145,7 +148,7 @@ footer{text-align:center;font-size:12px;color:var(--muted-2)}
 
 <!-- CUSTOM DESIGN REQUEST (FormSubmit) -->
 <dialog id="dlg" aria-labelledby="dlgTitle">
-  <div class="dlg">
+  <div class="dlg" tabindex="-1" autofocus>
     <div class="dlg-h">
       <div><h2 id="dlgTitle">Custom design</h2><p>Tell us about your project and we’ll get back to you.</p></div>
       <button type="button" class="close" id="closeForm" aria-label="Close"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -154,9 +157,38 @@ footer{text-align:center;font-size:12px;color:var(--muted-2)}
     <form id="form" novalidate>
       <div class="row">
         <label class="f">Name<input class="in" name="name" autocomplete="name" required maxlength="100"></label>
-        <label class="f">Phone <small>optional</small><input class="in" name="phone" type="tel" autocomplete="tel" maxlength="30"></label>
+        <label class="f">Email<input class="in" name="email" type="email" autocomplete="email" required maxlength="150"></label>
       </div>
-      <label class="f">Email<input class="in" name="email" type="email" autocomplete="email" required maxlength="150"></label>
+      <div class="f">
+        <label for="phone">Phone</label>
+        <div class="tel">
+          <select class="in" name="cc" aria-label="Country code" autocomplete="tel-country-code">
+            <option value="+34" selected>ES +34</option>
+            <option value="+351">PT +351</option>
+            <option value="+33">FR +33</option>
+            <option value="+376">AD +376</option>
+            <option value="+39">IT +39</option>
+            <option value="+49">DE +49</option>
+            <option value="+44">GB +44</option>
+            <option value="+353">IE +353</option>
+            <option value="+31">NL +31</option>
+            <option value="+32">BE +32</option>
+            <option value="+41">CH +41</option>
+            <option value="+43">AT +43</option>
+            <option value="+45">DK +45</option>
+            <option value="+46">SE +46</option>
+            <option value="+47">NO +47</option>
+            <option value="+48">PL +48</option>
+            <option value="+1">US/CA +1</option>
+            <option value="+52">MX +52</option>
+            <option value="+54">AR +54</option>
+            <option value="+56">CL +56</option>
+            <option value="+57">CO +57</option>
+            <option value="+51">PE +51</option>
+          </select>
+          <input class="in" id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required maxlength="20" placeholder="612 345 678">
+        </div>
+      </div>
       <label class="f">Your project <small>what you need, sizes, use, quantity…</small><textarea class="in" name="message" required maxlength="3000"></textarea></label>
       <fieldset>
         <legend>Do you have photos or sketches?</legend>
@@ -213,6 +245,18 @@ footer{text-align:center;font-size:12px;color:var(--muted-2)}
   $("doneClose").addEventListener("click",function(){dlg.close()});
   dlg.addEventListener("click",function(e){if(e.target===dlg)dlg.close()});
   form.addEventListener("change",function(e){if(e.target.name==="photos")$("photoHint").hidden=e.target.value!=="Yes"});
+  form.phone.addEventListener("input",function(){this.setCustomValidity("")});
+
+  /* Phone: digits only (spaces, dashes, dots, brackets allowed while typing).
+     Spain: 9 digits starting with 6, 7, 8 or 9. Elsewhere: 6–14 digits.
+     A leading 0 (national trunk prefix) is dropped, except for Italy. */
+  function phoneDigits(){
+    var cc=form.cc.value,v=form.phone.value.replace(/[\s().\-]/g,"");
+    if(!/^\d+$/.test(v))return "";
+    if(cc!=="+39")v=v.replace(/^0/,"");
+    var ok=cc==="+34"?/^[6789]\d{8}$/.test(v):/^\d{6,14}$/.test(v);
+    return ok?v:"";
+  }
 
   function mailtoFallback(d){
     var body="Name: "+d.name+"\nEmail: "+d.email+"\nPhone: "+(d.phone||"-")+"\nPhotos/sketches: "+(d.photos||"-")+"\n\n"+d.message;
@@ -227,13 +271,16 @@ footer{text-align:center;font-size:12px;color:var(--muted-2)}
   form.addEventListener("submit",function(e){
     e.preventDefault();
     msg.hidden=true;
+    var tel=phoneDigits();
+    form.phone.setCustomValidity(form.phone.value.trim()&&!tel?"invalid":"");
     if(!form.checkValidity()){
       var bad=form.querySelector(":invalid");
-      showError(bad&&bad.name==="email"&&bad.value?"Please enter a valid email.":"Please fill in the required fields.");
+      showError(bad&&bad.value&&bad.name==="email"?"Please enter a valid email.":bad&&bad.value&&bad.name==="phone"?"Please enter a valid phone number.":"Please fill in the required fields.");
       if(bad)bad.focus();
       return;
     }
     var fd=new FormData(form),d={};fd.forEach(function(v,k){d[k]=String(v).trim()});
+    d.phone=d.cc+" "+tel;
     if(d.botcheck)return;
     send.disabled=true;send.textContent="Sending…";
     fetch("https://formsubmit.co/ajax/"+TO,{
