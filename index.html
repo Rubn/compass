@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-OH7PEuczgzdHLCpJPmLyyBwprt8m9UxvnVzCFLfH07k='; style-src 'sha256-R4vylMVZt8X80ziF52AauNxuRObePtp/pGA51cTZYvA='; img-src 'self'; connect-src https://formsubmit.co; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-1GdJE1aWYPyNAXuvOMkL6lMQ8X9kUNZNCYO0IbsCZPw='; style-src 'sha256-4YDLlbga1xL8wpHCh5IY9DQMgh9INOpFwiAkJDMUFLc='; img-src 'self'; connect-src https://formsubmit.co; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>BFREE · Built to Explore</title>
@@ -49,6 +49,10 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke
 .link .go{color:var(--muted-2);font-size:18px}
 .link.main{background:var(--ink);color:var(--on-ink);box-shadow:none}
 .link.main:hover{background:var(--ink-hover)}
+.promo-link{background:#dfff45;color:#111;box-shadow:none;margin-top:-12px}
+.promo-link:hover{background:#d2f23a}
+.promo-link .ic{background:transparent;box-shadow:0 0 0 1px rgba(17,17,17,.35)}
+.promo-link small,.promo-link .go{color:#3d4512}
 .link.main .ic{background:transparent;box-shadow:0 0 0 1px var(--ink-line)}
 .link.main small,.link.main .go{color:var(--ink-muted)}
 
@@ -132,6 +136,11 @@ footer{text-align:center;font-size:12px;color:var(--muted-2)}
       <div><b id="cd-s">00</b><small>SEC</small></div>
     </div>
   </section>
+  <a class="card link promo-link" id="promoLink" hidden href="https://wearebfree.com/collections/blackfreeday?utm_source=instagram&amp;utm_medium=linkinbio&amp;utm_campaign=blackfreeday&amp;utm_content=collection-link">
+    <span class="ic"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9-9-9Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></span>
+    <span class="tx"><b>Shop BLACKFREEDAY</b><small>See the full collection</small></span>
+    <span class="go">→</span>
+  </a>
 
   <h2 class="titulo">Links</h2>
   <nav class="links">
@@ -232,14 +241,16 @@ footer{text-align:center;font-size:12px;color:var(--muted-2)}
   $("year").textContent=new Date().getFullYear();
 
   /* promo countdown */
-  var box=$("promo"),show=new Date(box.dataset.show||0),start=new Date(box.dataset.start),end=new Date(box.dataset.end),st=$("pState"),timer;
+  var box=$("promo"),show=new Date(box.dataset.show||0),start=new Date(box.dataset.start),end=new Date(box.dataset.end),st=$("pState"),pLink=$("promoLink"),timer;
+  /* the collection link shows and hides together with the countdown */
+  function vis(on){box.hidden=!on;pLink.hidden=!on}
   function tick(){
     var now=new Date(),target;
-    if(now<show){box.hidden=true;return}
+    if(now<show){vis(false);return}
     if(now<start){target=start;st.textContent="Starts in";st.className="live"}
     else if(now<end){target=end;st.textContent="Live · ends in";st.className="live on"}
-    else{box.hidden=true;clearInterval(timer);return}
-    box.hidden=false;
+    else{vis(false);clearInterval(timer);return}
+    vis(true);
     var t=Math.max(0,target-now)/1000;
     $("cd-d").textContent=p(Math.floor(t/86400));
     $("cd-h").textContent=p(Math.floor(t/3600)%24);
